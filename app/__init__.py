@@ -11,6 +11,8 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
+    # ensure models are imported so migrations discover them
+    import app.models  # noqa: F401 (module import side-effects)
     migrate.init_app(app, db)
 
     from app.api.users import users_blueprint
