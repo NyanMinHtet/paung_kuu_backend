@@ -1,5 +1,9 @@
-Flask
-Flask-SQLAlchemy
-Flask-Migrate
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlalchemy
 psycopg2-binary
-python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
