@@ -3,13 +3,10 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from core.config import settings
-import sys
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_password_hash(password: str) -> str:
-    print(f"bytesize of password:::: {sys.getsizeof(password)}")
-    print(f"pwd_context: {pwd_context}")
     return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
