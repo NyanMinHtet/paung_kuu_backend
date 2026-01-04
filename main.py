@@ -13,7 +13,9 @@ from api.v1.ratings.router import router as ratings_router
 def create_tables():
     Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    # docs_url=True
+)
 
 @app.on_event("startup")
 def on_startup():

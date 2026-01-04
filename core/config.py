@@ -5,14 +5,14 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Paung Kuu"
     PROJECT_VERSION: str = "1.0.0"
 
-    # Database configuration
-    # You should set the DATABASE_URL environment variable.
-    # Example for PostgreSQL: DATABASE_URL="postgresql://user:password@host:port/dbname"
-    DATABASE_URL: str = "postgresql://postgres:root@localhost/paung_kuu"
+    # These values will be loaded from the .env file
+    DATABASE_URL: str
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     class Config:
         case_sensitive = True
-        # This allows loading variables from a .env file
         env_file = ".env"
         env_file_encoding = 'utf-8'
 
