@@ -11,3 +11,4 @@ class Wallet(Base):
     locked_credits = Column(Float, default=0.0)
 
     owner = relationship("User", back_populates="wallet")
+    transactions = relationship("Transaction", back_populates="wallet")

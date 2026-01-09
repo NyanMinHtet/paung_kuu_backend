@@ -1,18 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import List
+from sqlalchemy.orm import Session
 from .schemas import Task, TaskCreate
+from api.deps import get_db, get_current_user
+from crud.task import create_task as crud_create_task, get_tasks as crud_get_tasks
+from models.user import User as UserModel
 
 router = APIRouter()
 
 @router.post("/", response_model=Task)
-def create_task(task: TaskCreate):
-    # In a real app, you'd save the task to the database
-    return Task(id=1, title=task.title, description=task.description, poster_id=1)
+def create_task(task: TaskCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    return crud_create_task(db=db, task=task, user_id=current_user.id)
 
 @router.get("/", response_model=List[Task])
-def get_tasks():
-    # In a real app, you'd fetch tasks from the database
-    return [
-        Task(id=1, title="Learn Python", description="I want to learn the basics of Python.", poster_id=1),
-        Task(id=2, title="Fix a bug", description="I have a bug in my React app.", poster_id=2),
-    ]
+def get_tasks(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+    return crud_get_tasks(db=db, skip=skip, limit=limit)

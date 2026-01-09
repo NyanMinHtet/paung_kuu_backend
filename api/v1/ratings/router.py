@@ -1,18 +1,16 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import List
+from sqlalchemy.orm import Session
 from .schemas import Rating, RatingCreate
+from api.deps import get_db
+from crud.rating import create_rating as crud_create_rating, get_ratings_by_user_id
 
 router = APIRouter()
 
 @router.post("/", response_model=Rating)
-def create_rating(rating: RatingCreate):
-    # In a real app, you'd save the rating to the database
-    return Rating(id=1, rater_id=1, **rating.dict())
+def create_rating(rating: RatingCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    return crud_create_rating(db=db, rating=rating, rater_id=current_user.id)
 
 @router.get("/user/{user_id}", response_model=List[Rating])
-def get_user_ratings(user_id: int):
-    # In a real app, you'd fetch ratings for the specified user
-    return [
-        Rating(id=1, job_id=1, rater_id=1, rated_user_id=user_id, score=5, comment="Great mentor!"),
-        Rating(id=2, job_id=2, rater_id=2, rated_user_id=user_id, score=4, comment="Very helpful."),
-    ]
+def get_user_ratings(user_id: int, db: Session = Depends(get_db)):
+    return get_ratings_by_user_id(db=db, user_id=user_id)
